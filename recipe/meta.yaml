@@ -1,37 +1,44 @@
 {% set version = "1.4.7" %}
+{% set name = "salib" %}
 
 package:
-  name: salib
+  name: {{ name }}
   version: {{ version }}
 source:
-  fn: SALib-{{ version }}.tar.gz
-  url: https://pypi.io/packages/source/s/salib/salib-{{ version }}.tar.gz
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: 2e6cb19ec772d6cb7368feceae0f61e51f2d6afdbc4f8986a780b87d657b38cc
 build:
   number: 0
-  noarch: python
-  script: {{ PYTHON }} -m pip install . --no-deps -vv
+  skip: true  # [py<38]
+  script: {{ PYTHON }} -m pip install . --no-deps -vv --no-deps --no-build-isolation
 requirements:
   host:
     - pip
-    - python >=3.8
-    - hatchling >=1.8.1
+    - wheel
+    - python
+    - hatchling 1.12.2
   run:
-    - python >=3.8
+    - python
     - numpy >=1.20.3
     - pandas >=1.1.2
     - scipy >=1.7.3
-    - matplotlib-base
-    - pathos >=0.2.5
+    - matplotlib-base >=3.2.2
     - multiprocess
+    - pathos >=0.2.5
+
 test:
+  requires:
+    - pip
+  commands:
+    - pip check
   imports:
     - SALib
 about:
-  home: http://salib.github.io/SALib/
+  home: https://github.com/SALib/SALib
   dev_url: https://github.com/SALib/SALib
-  doc_url: http://salib.readthedocs.org
+  doc_url: https://salib.readthedocs.io
   license: MIT
+  license_family: MIT
   license_file: LICENSE.md
   summary: Sensitivity Analysis Library
   description: |
