@@ -14,7 +14,6 @@ build:
 requirements:
   host:
     - pip
-    - wheel
     - python
     - hatchling 1.12.2
   run:
@@ -24,6 +23,7 @@ requirements:
     - scipy >=1.7.3
     - matplotlib-base >=3.2.2
     - multiprocess
+  run_constrained:
     - pathos >=0.2.5
 
 test:
