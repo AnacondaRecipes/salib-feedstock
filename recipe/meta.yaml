@@ -10,7 +10,7 @@ source:
 build:
   number: 0
   skip: true  # [py<38]
-  script: {{ PYTHON }} -m pip install . --no-deps -vv --no-deps --no-build-isolation
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 requirements:
   host:
     - pip
@@ -33,6 +33,7 @@ test:
     - pip check
   imports:
     - SALib
+
 about:
   home: https://github.com/SALib/SALib
   dev_url: https://github.com/SALib/SALib
