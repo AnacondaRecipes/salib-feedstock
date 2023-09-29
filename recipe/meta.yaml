@@ -15,7 +15,7 @@ requirements:
   host:
     - pip
     - python
-    - hatchling 1.18
+    - hatchling
   run:
     - python
     - numpy >=1.20.3
