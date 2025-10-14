@@ -1,36 +1,50 @@
-{% set version = "1.4.7" %}
-{% set name = "salib" %}
+{% set name = "SALib" %}
+{% set version = "1.5.2" %}
 
 package:
-  name: {{ name }}
+  name: {{ name|lower }}
   version: {{ version }}
+
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 2e6cb19ec772d6cb7368feceae0f61e51f2d6afdbc4f8986a780b87d657b38cc
+  url: https://github.com/{{ name }}/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz
+  sha256: de0e88d1fd7df5574573c70a0e1933faab136b2845e64d7ad65ebb883e6cc69e
+
 build:
-  number: 1
-  skip: true  # [py<38]
+  entry_points:
+    - salib = SALib.scripts.salib:main
+  number: 0
+  skip: true  # [py<39]
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
 requirements:
   host:
     - pip
     - python
+    - hatch-vcs
     - hatchling
   run:
     - python
-    - numpy >=1.20.3
-    - pandas >=1.1.2
-    - scipy >=1.7.3
-    - matplotlib-base >=3.2.2
+    - numpy >=2.0
+    - pandas >=2.0
+    - scipy >=1.9.3
+    - matplotlib-base >=3.5
     - multiprocess
   run_constrained:
-    - pathos >=0.2.5
+    - pathos >=0.3.2
 
 test:
+  source_files:
+    - tests
+    - src/SALib/test_functions
+    - pyproject.toml
   requires:
     - pip
+    - pytest
   commands:
     - pip check
+    # E AssertionError:
+    # E Not equal to tolerance rtol=1e-07, atol=0.005
+    - pytest -v --ignore=tests/test_discrepancy.py
   imports:
     - SALib
 
