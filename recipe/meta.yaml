@@ -12,7 +12,7 @@ source:
 build:
   entry_points:
     - salib = SALib.scripts.salib:main
-  number: 0
+  number: 1
   skip: true  # [py<39]
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
