@@ -34,7 +34,7 @@ requirements:
 
 {% set ignore_tests = "_test_stab" %}
 # tests/test_sample_seed.py:26: AssertionError
-{% set ignore_tests = ignore_tests + " or test_morris_sample_seed" %}  # [osx and py==310]
+# {% set ignore_tests = ignore_tests + " or test_morris_sample_seed" %}  # [osx and py==310]
 
 test:
   source_files:
