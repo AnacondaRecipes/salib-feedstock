@@ -12,7 +12,7 @@ source:
 build:
   entry_points:
     - salib = SALib.scripts.salib:main
-  number: 1
+  number: 2
   skip: true  # [py<39]
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
@@ -24,7 +24,10 @@ requirements:
     - hatchling
   run:
     - python
-    - numpy >=2.0
+    # The bug is in SALib/analyze/sobol.py: when Y.std() == 0 (constant output), dividing by zero produces NaN,
+    # and first_order() returns a NaN array instead of a scalar. NumPy 2.4.x is stricter about assigning an array
+    # into a scalar slot (S["S1"][j] = <array>), so it raises ValueError. Earlier NumPy 2.x versions silently coerced it. 
+    - numpy >=2.0,<2.4
     - pandas >=2.0
     - scipy >=1.9.3
     - matplotlib-base >=3.5
