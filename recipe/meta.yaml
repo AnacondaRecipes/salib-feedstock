@@ -10,11 +10,11 @@ source:
   sha256: da0eb0fdcc46662c00c5ab72b8557314eb524864aed712a4317c8f43562e9028
 
 build:
+  number: 0
   entry_points:
     - salib = SALib.scripts.salib:main
-  number: 0
-  skip: true  # [py<310]
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: true  # [py<310]
 
 requirements:
   host:
@@ -28,9 +28,9 @@ requirements:
     # and first_order() returns a NaN array instead of a scalar. NumPy 2.4.x is stricter about assigning an array
     # into a scalar slot (S["S1"][j] = <array>), so it raises ValueError. Earlier NumPy 2.x versions silently coerced it.
     - numpy >=2.0
-    - pandas >=2.0
     - scipy >=1.9.3
     - matplotlib-base >=3.5
+    - pandas >=2.0
     - multiprocess
   run_constrained:
     - pathos >=0.3.2
@@ -40,16 +40,14 @@ test:
     - tests
     - src/SALib/test_functions
     - pyproject.toml
+  imports:
+    - SALib
   requires:
     - pip
     - pytest
   commands:
     - pip check
-    # E AssertionError:
-    # E Not equal to tolerance rtol=1e-07, atol=0.005
-    - pytest -v --ignore=tests/test_discrepancy.py
-  imports:
-    - SALib
+    - pytest -vv
 
 about:
   home: https://github.com/SALib/SALib
