@@ -1,5 +1,5 @@
 {% set name = "SALib" %}
-{% set version = "1.5.2" %}
+{% set version = "1.6.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,14 +7,14 @@ package:
 
 source:
   url: https://github.com/{{ name }}/{{ name }}/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: de0e88d1fd7df5574573c70a0e1933faab136b2845e64d7ad65ebb883e6cc69e
+  sha256: da0eb0fdcc46662c00c5ab72b8557314eb524864aed712a4317c8f43562e9028
 
 build:
+  number: 0
   entry_points:
     - salib = SALib.scripts.salib:main
-  number: 2
-  skip: true  # [py<39]
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: true  # [py<310]
 
 requirements:
   host:
@@ -26,11 +26,11 @@ requirements:
     - python
     # The bug is in SALib/analyze/sobol.py: when Y.std() == 0 (constant output), dividing by zero produces NaN,
     # and first_order() returns a NaN array instead of a scalar. NumPy 2.4.x is stricter about assigning an array
-    # into a scalar slot (S["S1"][j] = <array>), so it raises ValueError. Earlier NumPy 2.x versions silently coerced it. 
-    - numpy >=2.0,<2.4
-    - pandas >=2.0
+    # into a scalar slot (S["S1"][j] = <array>), so it raises ValueError. Earlier NumPy 2.x versions silently coerced it.
+    - numpy >=2.0
     - scipy >=1.9.3
     - matplotlib-base >=3.5
+    - pandas >=2.0
     - multiprocess
   run_constrained:
     - pathos >=0.3.2
@@ -40,16 +40,14 @@ test:
     - tests
     - src/SALib/test_functions
     - pyproject.toml
+  imports:
+    - SALib
   requires:
     - pip
     - pytest
   commands:
     - pip check
-    # E AssertionError:
-    # E Not equal to tolerance rtol=1e-07, atol=0.005
-    - pytest -v --ignore=tests/test_discrepancy.py
-  imports:
-    - SALib
+    - pytest -vv
 
 about:
   home: https://github.com/SALib/SALib
@@ -63,6 +61,16 @@ about:
     Python implementations of commonly used sensitivity analysis methods.
     Useful in systems modeling to calculate the effects of model inputs or
     exogenous factors on outputs of interest.
+
+
+
+
+
+
+
+
+
+
 
 extra:
   recipe-maintainers:
